@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>untuk Lala</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Georgia,serif;}
+
+.bg{
+  background:url(https://i.ibb.co/87GbbFP/2799006.jpg) no-repeat center center;
+  background-size:cover;height:100%;width:100%;position:fixed;top:0;left:0;z-index:-3;
+}
+.bg:before{
+  content:"";width:100%;height:100%;background:#060010;
+  position:fixed;z-index:-2;top:0;left:0;opacity:0.72;
+}
+
+@keyframes sf-fly-by-1{from{transform:translateZ(-600px);opacity:.35}to{transform:translateZ(0);opacity:.35}}
+@keyframes sf-fly-by-2{from{transform:translateZ(-1200px);opacity:.35}to{transform:translateZ(-600px);opacity:.35}}
+@keyframes sf-fly-by-3{from{transform:translateZ(-1800px);opacity:.35}to{transform:translateZ(-1200px);opacity:.35}}
+.star-field{position:fixed;top:0;left:0;width:100%;height:100%;perspective:600px;z-index:-1;}
+.star-field .layer{
+  box-shadow:-411px -476px #ccc,777px -407px #d4d4d4,-387px -477px #fcfcfc,-91px -235px #d4d4d4,491px -460px #f7f7f7,892px -128px #f7f7f7,758px -277px #ededed,596px 378px #ccc,647px 423px whitesmoke,183px 389px #c7c7c7,524px -237px #f0f0f0,679px -535px #e3e3e3,158px 399px #ededed,157px 249px #ededed,81px -450px #ebebeb,719px -360px #c2c2c2,-499px 473px #e8e8e8,-158px -349px #d4d4d4,870px -134px #cfcfcf,446px 404px #c2c2c2,440px 490px #d4d4d4,414px 507px #e6e6e6,-12px 246px #fcfcfc,-384px 369px #e3e3e3,641px -413px #fcfcfc,822px 516px #dbdbdb,449px 132px #c2c2c2,727px 146px #f7f7f7,-315px -488px #e6e6e6,952px -70px #e3e3e3,-869px -29px #dbdbdb,502px 80px #dedede,764px 342px #e0e0e0,-150px -380px #dbdbdb,654px -426px #e3e3e3,-325px -263px #c2c2c2,755px -447px #c7c7c7,729px -177px #c2c2c2,-682px -391px #e6e6e6,554px -176px #ededed,-85px -428px #d9d9d9,714px 55px #e8e8e8,359px -285px #cfcfcf,-362px -508px #dedede,468px -265px #fcfcfc,74px -500px #c7c7c7,-514px 383px #dbdbdb,730px -92px #cfcfcf,-112px 287px #c9c9c9,-853px 79px #d6d6d6,828px 475px #d6d6d6,-681px 13px #fafafa,-176px 209px #f0f0f0,758px 457px #fafafa,-383px -454px #ededed,813px 179px #d1d1d1,608px 98px whitesmoke,-860px -65px #c4c4c4,-572px 272px #f7f7f7,459px 533px #fcfcfc,624px -481px #e6e6e6,790px 477px #dedede,731px -403px #ededed,70px -534px #ccc,-23px 510px #cfcfcf,-652px -237px whitesmoke,-690px 367px #d1d1d1,810px 536px #d1d1d1,774px 293px #c9c9c9,-362px 97px #c2c2c2,563px 47px #dedede,313px 475px #e0e0e0,839px -491px #e3e3e3,-217px 377px #d4d4d4,-581px 239px #c2c2c2,-857px 72px #ccc,-23px 340px #dedede,-837px 246px white,170px -502px #cfcfcf,822px -443px #e0e0e0,795px 497px #e0e0e0,-814px -337px #cfcfcf,206px -339px #f2f2f2,-779px 108px #e6e6e6,808px 2px #d4d4d4,665px 41px #d4d4d4,-564px 64px #ccc,-380px 74px #cfcfcf,-369px -60px #f7f7f7,47px -495px #e3e3e3,-383px 368px #f7f7f7,419px 288px #d1d1d1,-598px -50px #c2c2c2,-833px 187px #c4c4c4,378px 325px whitesmoke,-703px 375px #d6d6d6,392px 520px #d9d9d9,-492px -60px #c4c4c4,759px 288px #ebebeb,98px -412px #c4c4c4,-911px -277px #c9c9c9;
+  transform-style:preserve-3d;position:absolute;top:50%;left:50%;height:4px;width:4px;border-radius:2px;
+}
+.star-field .layer:nth-child(1){animation:sf-fly-by-1 5s linear infinite;}
+.star-field .layer:nth-child(2){animation:sf-fly-by-2 5s linear infinite;}
+.star-field .layer:nth-child(3){animation:sf-fly-by-3 5s linear infinite;}
+
+/* CSS BINTANG JATUH DYNAMIC DENGAN HEAD-FIRST */
+.sc-star {
+  position: fixed;
+  height: 2px;
+  /* KOREKSI DI SINI: Warna gradien dibalik agar bagian terang meteor memimpin (head-first) */
+  background: linear-gradient(-45deg, rgba(0,0,0,0), #ffffff);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 6px #ffffff);
+  opacity: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+@keyframes shootEffect {
+  0% { width: 0; transform: translate(0, 0) rotate(-45deg); opacity: 0; }
+  8% { opacity: 1; }
+  25% { width: 90px; }
+  50% { width: 0; transform: translate(var(--mx), var(--my)) rotate(-45deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* TAURUS BACKGROUND WRAP */
+#taurus-wrap{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;
+  opacity:0;transition:opacity 1.5s ease;
+}
+#taurus-wrap.show { opacity: 0.28; }
+#taurus-svg{position:absolute;top:0;left:0;width:100%;height:100%;}
+
+@keyframes drawLine{to{stroke-dashoffset:0;}}
+@keyframes starPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+.tline{
+  stroke:white;
+  stroke-width:1.5;
+  fill:none;
+  stroke-linecap:round;
+  stroke-dasharray:400;
+  stroke-dashoffset:400;
+  opacity:0.7;
+}
+/* Diubah jadi 1.5s agar goresan garis rasi bintang tampak lebih tenang & smooth, seperti welding pelan */
+.tline.draw{animation:drawLine 1.5s ease forwards;} 
+.tstar{fill:white;opacity:0.15;transition:opacity .5s;}
+.tstar.lit{opacity:1;animation:starPulse 3s ease-in-out infinite;}
+
+/* LOCK SCREEN */
+#lockScreen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:100;display:flex;align-items:center;justify-content:center;padding:2rem;
+  transition:opacity .9s ease;
+}
+#lockScreen.hide{opacity:0;pointer-events:none;}
+.lock-box{text-align:center;color:#fff;max-width:360px;width:100%;}
+.lock-icon{font-size:1.6rem;color:rgba(155,127,232,0.8);margin-bottom:0.8rem;letter-spacing:0.2em;}
+.lock-title{font-size:0.95rem;letter-spacing:0.25em;text-transform:uppercase;color:#b39ddb;margin-bottom:0.3rem;}
+.lock-sub{font-size:0.82rem;color:rgba(255,255,255,0.38);margin-bottom:1.8rem;letter-spacing:0.05em;}
+.lock-divider{display:flex;align-items:center;gap:10px;margin:0.8rem auto 1.4rem;width:fit-content;}
+.lock-divider-line{width:50px;height:1px;background:rgba(155,127,232,0.2);}
+.lock-divider-star{color:rgba(155,127,232,0.4);font-size:10px;}
+.selects{display:flex;gap:8px;justify-content:center;margin-bottom:1.2rem;}
+.selects select{
+  background:rgba(155,127,232,0.08);border:1px solid rgba(155,127,232,0.3);
+  color:#ddd6f3;padding:10px 10px;border-radius:10px;font-size:13px;
+  font-family:Georgia,serif;cursor:pointer;outline:none;
+  appearance:none;-webkit-appearance:none;text-align:center;
+}
+.selects select option{background:#130828;color:#ddd6f3;}
+.selects select:focus{border-color:#9b7fe8;}
+.sel-tgl{width:76px;}.sel-bln{width:108px;}.sel-thn{width:86px;}
+.btn-masuk{
+  background:rgba(155,127,232,0.18);border:1px solid rgba(155,127,232,0.45);
+  color:#c5a8ff;padding:11px 0;border-radius:50px;font-size:13px;
+  font-family:Georgia,serif;cursor:pointer;letter-spacing:0.12em;
+  transition:all .25s;width:100%;margin-top:4px;
+}
+.btn-masuk:hover{background:rgba(155,127,232,0.32);border-color:#9b7fe8;}
+.err-msg{font-size:12px;color:#e57373;margin-top:0.8rem;letter-spacing:0.04em;min-height:16px;transition:opacity .3s;}
+.err-msg.hidden{opacity:0;}
+
+/* SURAT SCREEN */
+#suratScreen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:10;display:flex;align-items:center;justify-content:center;
+  padding:2rem 2rem 8rem;
+  opacity:0;pointer-events:none;transition:opacity 1.2s ease;
+}
+#suratScreen.show{opacity:1;pointer-events:auto;}
+.page{
+  position:absolute;opacity:0;pointer-events:none;
+  transition:opacity 1s ease,transform 1s ease;
+  transform:translateY(18px);text-align:center;color:#fff;
+  max-width:520px;width:calc(100% - 3rem);
+}
+.page.active{opacity:1;pointer-events:auto;transform:translateY(0);}
+.to-label{font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#9b7fe8;margin-bottom:0.4rem;}
+.recipient{font-size:2rem;font-weight:700;color:#e8d5ff;margin-bottom:1.2rem;text-shadow:0 0 50px rgba(155,127,232,0.55);}
+.divider{display:flex;align-items:center;gap:10px;margin:0 auto 1.2rem;width:fit-content;}
+.divider-line{width:40px;height:1px;background:rgba(155,127,232,0.3);}
+.divider-star{color:rgba(155,127,232,0.55);font-size:11px;}
+.quote{font-size:2.6rem;line-height:0.7;color:rgba(155,127,232,0.18);margin-bottom:0.3rem;}
+.msg{font-size:1rem;line-height:1.95;color:#ddd6f3;padding:0 0.5rem;}
+.msg em{color:#c5a8ff;font-style:normal;}
+.sign{color:#9b7fe8;font-style:italic;margin-top:1.2rem;font-size:0.9rem;letter-spacing:0.05em;}
+
+/* DOTS NAVIGATION */
+.dots{
+  position:fixed;bottom:5.8rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:9px;z-index:20;opacity:0;pointer-events:none;transition:opacity 1s ease;
+}
+.dots.show{opacity:1;pointer-events:auto;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(180,150,255,0.2);cursor:pointer;transition:all .4s;}
+.dot.active{background:#9b7fe8;transform:scale(1.5);}
+
+/* ARROW BUTTONS */
+#navBtns{
+  position:fixed;bottom:5.6rem;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:20px;z-index:20;
+  opacity:0;pointer-events:none;transition:opacity 1s ease;
+}
+#navBtns.show{opacity:1;pointer-events:auto;}
+.nav-arrow{
+  background:rgba(155,127,232,0.12);border:1px solid rgba(155,127,232,0.3);
+  color:#c5a8ff;width:34px;height:34px;border-radius:50%;
+  font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+}
+.nav-arrow:hover{background:rgba(155,127,232,0.28);}
+.nav-arrow:disabled{opacity:0.25;cursor:default;}
+
+/* MUSIC PLAYER */
+#player{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  padding:10px 18px 14px;
+  background:rgba(8,0,18,0.88);
+  border-top:1px solid rgba(155,127,232,0.12);
+  backdrop-filter:blur(14px);
+  opacity:0;transition:opacity 1s ease;
+}
+#player.show{opacity:1;}
+.player-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.album-art{
+  width:40px;height:40px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(135deg,#2d0f5e,#9b7fe8);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.track-info{flex:1;min-width:0;}
+.track-title{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:sans-serif;}
+.track-artist{font-size:11px;color:rgba(255,255,255,0.45);font-family:sans-serif;margin-top:2px;}
+.vol-wrap{display:flex;align-items:center;gap:6px;}
+.vol-icon{font-size:12px;color:rgba(255,255,255,0.45);}
+.vol-slider{width:56px;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;}
+.vol-slider::-webkit-slider-thumb{appearance:none;width:10px;height:10px;border-radius:50%;background:#9b7fe8;cursor:pointer;}
+.player-controls{display:flex;align-items:center;gap:14px;}
+.btn-play{
+  width:30px;height:30px;border-radius:50%;background:#9b7fe8;
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:transform .15s,background .2s;
+}
+.btn-play:hover{background:#b39ddb;transform:scale(1.07);}
+.btn-play svg{fill:#fff;width:12px;height:12px;margin-left:1px;}
+.btn-play.playing svg.ico-play{display:none;}
+svg.ico-pause{display:none;}
+.btn-play.playing svg.ico-pause{display:block;}
+.progress-wrap{flex:1;display:flex;align-items:center;gap:7px;}
+.time{font-size:10px;color:rgba(255,255,255,0.38);font-family:sans-serif;min-width:28px;}
+.time.right{text-align:right;}
+.prog-bar{flex:1;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;cursor:pointer;}
+.prog-fill{height:100%;background:#9b7fe8;border-radius:2px;width:0%;}
+.prog-bar:hover .prog-fill{background:#c5a8ff;}
+</style>
+</head>
+<body>
+
+<audio id="audio" src="musik.mp3"></audio>
+<div class="bg"></div>
+
+<div class="star-field">
+  <div class="layer"></div><div class="layer"></div><div class="layer"></div>
+</div>
+
+<div id="taurus-wrap">
+  <svg id="taurus-svg" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <line id="l1" class="tline" x1="160" y1="190" x2="225" y2="245"/>
+    <line id="l2" class="tline" x1="225" y1="245" x2="260" y2="275"/>
+    <line id="l3" class="tline" x1="95" y1="255" x2="235" y2="305"/>
+    <line id="l4" class="tline" x1="235" y1="305" x2="260" y2="275"/>
+    <line id="l5" class="tline" x1="235" y1="305" x2="265" y2="330"/>
+    <line id="l6" class="tline" x1="265" y1="330" x2="280" y2="310"/>
+    <line id="l7" class="tline" x1="280" y1="310" x2="270" y2="280"/>
+    <line id="l8" class="tline" x1="270" y1="280" x2="260" y2="275"/>
+    <line id="l9" class="tline" x1="280" y1="310" x2="380" y2="275"/>
+    <line id="l10" class="tline" x1="265" y1="330" x2="320" y2="370"/>
+    <line id="l11" class="tline" x1="320" y1="370" x2="390" y2="420"/>
+    <line id="l12" class="tline" x1="390" y1="420" x2="385" y2="400"/>
+
+    <circle id="s0" class="tstar" cx="160" cy="190" r="5" filter="url(#glow)"/>
+    <circle id="s1" class="tstar" cx="225" cy="245" r="3.5" filter="url(#glow)"/>
+    <circle id="s2" class="tstar" cx="260" cy="275" r="4" filter="url(#glow)"/>
+    <circle id="s3" class="tstar" cx="95" cy="255" r="5" filter="url(#glow)"/>
+    <circle id="s4" class="tstar" cx="235" cy="305" r="4.5" filter="url(#glow)"/>
+    <circle id="s5" class="tstar" cx="265" cy="330" r="4" filter="url(#glow)"/>
+    <circle id="s6" class="tstar" cx="280" cy="310" r="3.5" filter="url(#glow)"/>
+    <circle id="s7" class="tstar" cx="270" cy="280" r="3.5" filter="url(#glow)"/>
+    <circle id="s8" class="tstar" cx="380" cy="275" r="4.5" filter="url(#glow)"/>
+    <circle id="s9" class="tstar" cx="320" cy="370" r="4" filter="url(#glow)"/>
+    <circle id="s10" class="tstar" cx="390" cy="420" r="5" filter="url(#glow)"/>
+    <circle id="s11" class="tstar" cx="385" cy="400" r="3" filter="url(#glow)"/>
+  </svg>
+</div>
+
+<div id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-icon">✦ ✦ ✦</div>
+    <div class="lock-title">Ada pesan untukmu</div>
+    <div class="lock-sub">masukkan tanggal lahirmu untuk membuka</div>
+    <div class="lock-divider"><div class="lock-divider-line"></div><div class="lock-divider-star">✦</div><div class="lock-divider-line"></div></div>
+    <div class="selects">
+      <select id="selTgl" class="sel-tgl"><option value="">Tgl</option></select>
+      <select id="selBln" class="sel-bln">
+        <option value="">Bulan</option>
+        <option value="1">Januari</option><option value="2">Februari</option>
+        <option value="3">Maret</option><option value="4">April</option>
+        <option value="5">Mei</option><option value="6">Juni</option>
+        <option value="7">Juli</option><option value="8">Agustus</option>
+        <option value="9">September</option><option value="10">Oktober</option>
+        <option value="11">November</option><option value="12">Desember</option>
+      </select>
+      <select id="selThn" class="sel-thn"><option value="">Tahun</option></select>
+    </div>
+    <button class="btn-masuk" onclick="cekPassword()">Buka Pesan</button>
+    <div class="err-msg hidden" id="errMsg">Tanggal lahir tidak sesuai</div>
+  </div>
+</div>
+
+<div id="suratScreen">
+  <div class="page active" id="p0">
+    <div class="to-label">untuk</div>
+    <div class="recipient">Lala</div>
+    <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
+    <div class="quote">"</div>
+    <div class="msg">
+      Halo La, makasih ya udah mau nerima apa yang aku kirim.<br>
+      Ini ada soang — kemarin iseng liat-liat, nemu ini di beranda<br>
+      terus langsung ke inget kamu, jadi ya udah, aku beliin deh. <em>hehe</em>
+    </div>
+  </div>
+
+  <div class="page" id="p1">
+    <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
+    <div class="quote">"</div>
+    <div class="msg">
+      Aku nggak tau persis apa yang bikin kamu badmood atau pusing belakangan ini,<br>
+      tapi semoga soang ini bisa jadi temen kecil yang bantu jagain mood kamu<br>
+      di setiap harinya ya. <em>:)</em>
+    </div>
+  </div>
+
+  <div class="page" id="p2">
+    <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
+    <div class="quote">"</div>
+    <div class="msg">
+      Aku nggak berhak banyak bicara sih, tapi —<br>
+      jangan terlalu sering overthinking ya, La.<br>
+      Kamu berhak bahagia tanpa beban, jadi diri sendiri,<br>
+      and ngelakuin apa yang emang kamu mau. Itu cukup.
+    </div>
+  </div>
+
+  <div class="page" id="p3">
+    <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
+    <div class="quote">"</div>
+    <div class="msg">
+      Oh iya, soal kenapa aku bisa sedetail itu — aku bukan nggak mau jawab,<br>
+      cuma agak susah ngejelasinnya. Singkatnya:<br>
+      aku punya <em>shorten memory</em>, otak otomatis ngefilter apa yang dianggap penting.<br>
+      Kalau sesuatu dianggap berarti, aku bisa inget sampai hal terkecilnya.<br>
+      Bukan kemampuan khusus — kata psikolog ini muncul karena mental yang mulai membaik. <em>hehe</em>
+    </div>
+  </div>
+
+  <div class="page" id="p4">
+    <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
+    <div class="quote">"</div>
+    <div class="msg">
+      Aku jelasin itu biar kamu nggak perlu khawatir atau takut ngelakuin sesuatu.<br>
+      Aku nggak punya maksud apa-apa, cuma mau lakuin yang bikin aku senang — sama kayak<br>
+      yang aku pengen buat kamu rasain juga.<br><br>
+      Jangan begadang, makan yang cukup ya —<br>
+      mau gendut mau kurus, itu hak kamu sepenuhnya.<br>
+      <em>Happy terus, La.</em>
+    </div>
+    <div class="sign">— semoga pesannya nyampe bareng soangnya 🪿</div>
+  </div>
+</div>
+
+<div class="dots" id="dots">
+  <div class="dot active" id="d0" onclick="goTo(0)"></div>
+  <div class="dot" id="d1" onclick="goTo(1)"></div>
+  <div class="dot" id="d2" onclick="goTo(2)"></div>
+  <div class="dot" id="d3" onclick="goTo(3)"></div>
+  <div class="dot" id="d4" onclick="goTo(4)"></div>
+</div>
+
+<div id="navBtns">
+  <button class="nav-arrow" id="btnPrev" onclick="manualPrev()" disabled>&#8592;</button>
+  <button class="nav-arrow" id="btnNext" onclick="manualNext()">&#8594;</button>
+</div>
+
+<div id="player">
+  <div class="player-top">
+    <div class="album-art">♪</div>
+    <div class="track-info">
+      <div class="track-title">10,000 Hours</div>
+      <div class="track-artist">Dan + Shay, Justin Bieber</div>
+    </div>
+    <div class="vol-wrap">
+      <span class="vol-icon">🔊</span>
+      <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.01" value="0.8">
+    </div>
+  </div>
+  <div class="player-controls">
+    <button class="btn-play" id="btnPlay" onclick="togglePlay()">
+      <svg class="ico-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="ico-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="progress-wrap">
+      <span class="time" id="timeCur">0:00</span>
+      <div class="prog-bar" id="progBar" onclick="seekAudio(event)">
+        <div class="prog-fill" id="progFill"></div>
+      </div>
+      <span class="time right" id="timeTot">0:00</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Pengisian tanggal otomatis dropdown
+var selTgl=document.getElementById('selTgl');
+for(var i=1;i<=31;i++){var o=document.createElement('option');o.value=i;o.textContent=(i<10?'0':'')+i;selTgl.appendChild(o);}
+var selThn=document.getElementById('selThn');
+for(var y=2010;y>=1990;y--){var o=document.createElement('option');o.value=y;o.textContent=y;selThn.appendChild(o);}
+
+var BENAR_TGL=9,BENAR_BLN=5,BENAR_THN=2005;
+var audio=document.getElementById('audio');
+var btnPlay=document.getElementById('btnPlay');
+
+function cekPassword(){
+  var tgl=parseInt(document.getElementById('selTgl').value);
+  var bln=parseInt(document.getElementById('selBln').value);
+  var thn=parseInt(document.getElementById('selThn').value);
+  var err=document.getElementById('errMsg');
+  if(tgl===BENAR_TGL&&bln===BENAR_BLN&&thn===BENAR_THN){
+    err.classList.add('hidden');
+    document.getElementById('lockScreen').classList.add('hide');
+    setTimeout(startTaurus, 500);
+  } else {
+    err.classList.remove('hidden');
+    err.textContent='Tanggal lahir tidak sesuai 🌙';
+    setTimeout(function(){err.classList.add('hidden');},2500);
+  }
+}
+
+// LOGIKA TAURUS ANIMATION (DIATUR LEBIH LAMBAT & SMOOTH)
+var lineSeq=[
+  {id:'l1',  stars:['s0', 's1']},
+  {id:'l2',  stars:['s2']},
+  {id:'l3',  stars:['s3', 's4']},
+  {id:'l4',  stars:[]},
+  {id:'l5',  stars:['s5']},
+  {id:'l6',  stars:['s6']},
+  {id:'l7',  stars:['s7']},
+  {id:'l8',  stars:[]},
+  {id:'l9',  stars:['s8']},
+  {id:'l10', stars:['s9']},
+  {id:'l11', stars:['s10']},
+  {id:'l12', stars:['s11']},
+];
+
+function startTaurus(){
+  document.getElementById('taurus-wrap').classList.add('show');
+  for(var i=0;i<12;i++) document.getElementById('s'+i).style.opacity='0.12';
+
+  // KOREKSI DI SINI: Jeda dirubah menjadi 1000ms (1 detik per garis) agar mengalir sangat smooth seperti welding
+  lineSeq.forEach(function(step,i){
+    setTimeout(function(){
+      document.getElementById(step.id).classList.add('draw');
+      step.stars.forEach(function(sid){
+        var el=document.getElementById(sid);
+        el.style.transition = 'opacity 0.6s'; // Point welds light up over 0.6s
+        el.style.opacity='1';
+        el.classList.add('lit');
+      });
+    }, i * 1000); 
+  });
+
+  // Memunculkan surat, mengaktifkan musik, dan menyalakan bintang jatuh acak
+  document.getElementById('suratScreen').classList.add('show');
+  document.getElementById('player').classList.add('show');
+  audio.volume=0.8;
+  
+  if(audio.duration && !isNaN(audio.duration)){
+    dynamicTime = (audio.duration * 1000) / total;
+  }
+
+  audio.play().catch(function(){});
+  btnPlay.classList.add('playing');
+  
+  // Aktifkan sistem bintang jatuh acak (3-5 bintang berkala)
+  initShootingStars();
+  scheduleNext(); 
+}
+
+// JAVASCRIPT UNTUK GENERATOR BINTANG JATUH ACAK (RANDOM TRAJECTORY)
+function spawnStar() {
+  var star = document.createElement('div');
+  star.className = 'sc-star';
+  
+  // Mengacak posisi awal di langit kanan/atas (0% sampai 40% top, 40% sampai 95% left)
+  var startTop = Math.random() * 40;
+  var startLeft = 40 + (Math.random() * 55);
+  
+  // Mengacak seberapa jauh bintang akan meluncur ke arah kiri-bawah secara diagonal
+  var moveX = -(200 + Math.random() * 250) + 'px'; 
+  var moveY = (200 + Math.random() * 250) + 'px';
+  
+  star.style.top = startTop + '%';
+  star.style.left = startLeft + '%';
+  star.style.setProperty('--mx', moveX);
+  star.style.setProperty('--my', moveY);
+  
+  // Set durasi meluncur acak antara 3.5 detik sampai 5 detik agar estetik
+  var duration = 3500 + (Math.random() * 1500);
+  star.style.animation = 'shootEffect ' + duration + 'ms ease-in-out forwards';
+  
+  document.body.appendChild(star);
+  
+  // Hapus element setelah selesai meluncur agar browser tidak berat
+  setTimeout(function() {
+    star.remove();
+  }, duration);
+}
+
+function initShootingStars() {
+  // Munculkan 3 bintang acak pertama secara bergantian di awal surat dibuka
+  for (var i = 0; i < 3; i++) {
+    setTimeout(spawnStar, Math.random() * 3000);
+  }
+  // Berjalan berkala memunculkan bintang baru setiap beberapa detik
+  setInterval(function() {
+    if (document.querySelectorAll('.sc-star').length < 5) {
+      spawnStar();
+    }
+  }, 3500);
+}
+
+// AUTOSLIDE DAN NAVIGASI SURAT
+var cur=0, total=5;
+var slideTimer=null;
+var dynamicTime=6000; 
+
+function updateNav(){
+  document.getElementById('btnPrev').disabled = cur===0;
+  document.getElementById('btnNext').disabled = cur===total-1;
+}
+
+function goTo(i){
+  document.getElementById('p'+cur).classList.remove('active');
+  document.getElementById('d'+cur).classList.remove('active');
+  cur=i;
+  document.getElementById('p'+cur).classList.add('active');
+  document.getElementById('d'+cur).classList.add('active');
+  updateNav();
+}
+
+function scheduleNext(){
+  if(slideTimer) clearTimeout(slideTimer);
+  
+  if(cur < total - 1){
+    slideTimer = setTimeout(function(){
+      goTo(cur + 1);
+      if(cur === total - 1){
+        document.getElementById('dots').classList.add('show');
+        document.getElementById('navBtns').classList.add('show');
+      } else {
+        scheduleNext();
+      }
+    }, dynamicTime);
+  }
+}
+
+function manualPrev(){
+  if(cur===0) return;
+  if(slideTimer) clearTimeout(slideTimer);
+  goTo(cur-1);
+}
+function manualNext(){
+  if(cur===total-1) return;
+  if(slideTimer) clearTimeout(slideTimer);
+  goTo(cur+1);
+}
+
+// KONTROL AUDIO
+function togglePlay(){
+  if(audio.paused){audio.play();btnPlay.classList.add('playing');}
+  else{audio.pause();btnPlay.classList.remove('playing');}
+}
+audio.addEventListener('timeupdate',function(){
+  if(!audio.duration)return;
+  document.getElementById('progFill').style.width=(audio.currentTime/audio.duration*100)+'%';
+  document.getElementById('timeCur').textContent=fmtTime(audio.currentTime);
+});
+audio.addEventListener('loadedmetadata',function(){
+  document.getElementById('timeTot').textContent=fmtTime(audio.duration);
+  if(audio.duration && !isNaN(audio.duration)){
+    dynamicTime = (audio.duration * 1000) / total;
+  }
+});
+function fmtTime(s){var m=Math.floor(s/60);var sc=Math.floor(s%60);return m+':'+(sc<10?'0':'')+sc;}
+function seekAudio(e){
+  var r=document.getElementById('progBar').getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+}
+document.getElementById('volSlider').addEventListener('input',function(){audio.volume=parseFloat(this.value);});
+
+updateNav();
+</script>
+</body>
+</html>
