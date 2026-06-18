@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>soang untuk Lala</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪿</text></svg>">
+<title>bunga untuk Lala</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Georgia,serif;}
@@ -34,7 +34,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Georgia,serif;}
 .sc-star {
   position: fixed;
   height: 2px;
-  /* KOREKSI DI SINI: Warna gradien dibalik agar bagian terang meteor memimpin (head-first) */
   background: linear-gradient(-45deg, rgba(0,0,0,0), #ffffff);
   border-radius: 999px;
   filter: drop-shadow(0 0 6px #ffffff);
@@ -70,7 +69,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Georgia,serif;}
   stroke-dashoffset:400;
   opacity:0.7;
 }
-/* Diubah jadi 1.5s agar goresan garis rasi bintang tampak lebih tenang & smooth, seperti welding pelan */
 .tline.draw{animation:drawLine 1.5s ease forwards;} 
 .tstar{fill:white;opacity:0.15;transition:opacity .5s;}
 .tstar.lit{opacity:1;animation:starPulse 3s ease-in-out infinite;}
@@ -279,7 +277,7 @@ svg.ico-pause{display:none;}
     <div class="quote">"</div>
     <div class="msg">
       Halo La, makasih ya udah mau nerima apa yang aku kirim.<br>
-      Ini ada soang — kemarin iseng liat-liat, nemu ini di beranda<br>
+      Ini ada bunga — kemarin iseng liat-liat, nemu ini di beranda<br>
       terus langsung ke inget kamu, jadi ya udah, aku beliin deh. <em>hehe</em>
     </div>
   </div>
@@ -288,8 +286,8 @@ svg.ico-pause{display:none;}
     <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
     <div class="quote">"</div>
     <div class="msg">
-      Aku nggak tau persis apa yang bikin kamu badmood atau pusing belakangan ini,<br>
-      tapi semoga soang ini bisa jadi temen kecil yang bantu jagain mood kamu<br>
+      Aku nggak tau persis mood kamu lagi bagus atau nggak belakangan ini,<br>
+      tapi semoga bunga ini bisa jadi pengingat kecil yang bantu jagain mood kamu<br>
       di setiap harinya ya. <em>:)</em>
     </div>
   </div>
@@ -301,7 +299,7 @@ svg.ico-pause{display:none;}
       Aku nggak berhak banyak bicara sih, tapi —<br>
       jangan terlalu sering overthinking ya, La.<br>
       Kamu berhak bahagia tanpa beban, jadi diri sendiri,<br>
-      and ngelakuin apa yang emang kamu mau. Itu cukup.
+      dan ngelakuin apa yang emang kamu mau. Itu cukup.
     </div>
   </div>
 
@@ -309,8 +307,9 @@ svg.ico-pause{display:none;}
     <div class="divider"><div class="divider-line"></div><div class="divider-star">✦</div><div class="divider-line"></div></div>
     <div class="quote">"</div>
     <div class="msg">
-      Oh iya, soal kenapa aku bisa sedetail itu — aku bukan nggak mau jawab,<br>
-      cuma agak susah ngejelasinnya. Singkatnya:<br>
+      Oh iya, maaf juga baru sempet jelasin soal kenapa aku bisa inget detail sebanyak itu —<br>
+      bukan karena nggak mau cerita, cuma agak susah aja nyari waktu yang pas.<br>
+      Singkatnya:<br>
       aku punya <em>shorten memory</em>, otak otomatis ngefilter apa yang dianggap penting.<br>
       Kalau sesuatu dianggap berarti, aku bisa inget sampai hal terkecilnya.<br>
       Bukan kemampuan khusus — kata psikolog ini muncul karena mental yang mulai membaik. <em>hehe</em>
@@ -328,7 +327,7 @@ svg.ico-pause{display:none;}
       mau gendut mau kurus, itu hak kamu sepenuhnya.<br>
       <em>Happy terus, La.</em>
     </div>
-    <div class="sign">— semoga pesannya nyampe bareng soangnya 🪿</div>
+    <div class="sign">— semoga pesannya nyampe bareng bunganya 🌸</div>
   </div>
 </div>
 
@@ -399,7 +398,7 @@ function cekPassword(){
   }
 }
 
-// LOGIKA TAURUS ANIMATION (DIATUR LEBIH LAMBAT & SMOOTH)
+// LOGIKA TAURUS ANIMATION
 var lineSeq=[
   {id:'l1',  stars:['s0', 's1']},
   {id:'l2',  stars:['s2']},
@@ -419,20 +418,18 @@ function startTaurus(){
   document.getElementById('taurus-wrap').classList.add('show');
   for(var i=0;i<12;i++) document.getElementById('s'+i).style.opacity='0.12';
 
-  // KOREKSI DI SINI: Jeda dirubah menjadi 1000ms (1 detik per garis) agar mengalir sangat smooth seperti welding
   lineSeq.forEach(function(step,i){
     setTimeout(function(){
       document.getElementById(step.id).classList.add('draw');
       step.stars.forEach(function(sid){
         var el=document.getElementById(sid);
-        el.style.transition = 'opacity 0.6s'; // Point welds light up over 0.6s
+        el.style.transition = 'opacity 0.6s';
         el.style.opacity='1';
         el.classList.add('lit');
       });
     }, i * 1000); 
   });
 
-  // Memunculkan surat, mengaktifkan musik, dan menyalakan bintang jatuh acak
   document.getElementById('suratScreen').classList.add('show');
   document.getElementById('player').classList.add('show');
   audio.volume=0.8;
@@ -444,21 +441,17 @@ function startTaurus(){
   audio.play().catch(function(){});
   btnPlay.classList.add('playing');
   
-  // Aktifkan sistem bintang jatuh acak (3-5 bintang berkala)
   initShootingStars();
   scheduleNext(); 
 }
 
-// JAVASCRIPT UNTUK GENERATOR BINTANG JATUH ACAK (RANDOM TRAJECTORY)
 function spawnStar() {
   var star = document.createElement('div');
   star.className = 'sc-star';
   
-  // Mengacak posisi awal di langit kanan/atas (0% sampai 40% top, 40% sampai 95% left)
   var startTop = Math.random() * 40;
   var startLeft = 40 + (Math.random() * 55);
   
-  // Mengacak seberapa jauh bintang akan meluncur ke arah kiri-bawah secara diagonal
   var moveX = -(200 + Math.random() * 250) + 'px'; 
   var moveY = (200 + Math.random() * 250) + 'px';
   
@@ -467,24 +460,20 @@ function spawnStar() {
   star.style.setProperty('--mx', moveX);
   star.style.setProperty('--my', moveY);
   
-  // Set durasi meluncur acak antara 3.5 detik sampai 5 detik agar estetik
   var duration = 3500 + (Math.random() * 1500);
   star.style.animation = 'shootEffect ' + duration + 'ms ease-in-out forwards';
   
   document.body.appendChild(star);
   
-  // Hapus element setelah selesai meluncur agar browser tidak berat
   setTimeout(function() {
     star.remove();
   }, duration);
 }
 
 function initShootingStars() {
-  // Munculkan 3 bintang acak pertama secara bergantian di awal surat dibuka
   for (var i = 0; i < 3; i++) {
     setTimeout(spawnStar, Math.random() * 3000);
   }
-  // Berjalan berkala memunculkan bintang baru setiap beberapa detik
   setInterval(function() {
     if (document.querySelectorAll('.sc-star').length < 5) {
       spawnStar();
@@ -492,7 +481,6 @@ function initShootingStars() {
   }, 3500);
 }
 
-// AUTOSLIDE DAN NAVIGASI SURAT
 var cur=0, total=5;
 var slideTimer=null;
 var dynamicTime=6000; 
@@ -538,7 +526,6 @@ function manualNext(){
   goTo(cur+1);
 }
 
-// KONTROL AUDIO
 function togglePlay(){
   if(audio.paused){audio.play();btnPlay.classList.add('playing');}
   else{audio.pause();btnPlay.classList.remove('playing');}
