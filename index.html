@@ -436,6 +436,7 @@ function startTaurus(){
   
   if(audio.duration && !isNaN(audio.duration)){
     dynamicTime = (audio.duration * 1000) / total;
+    computePageTimes(audio.duration * 1000);
   }
 
   audio.play().catch(function(){});
@@ -483,7 +484,26 @@ function initShootingStars() {
 
 var cur=0, total=5;
 var slideTimer=null;
-var dynamicTime=6000; 
+var dynamicTime=6000;  // fallback kalau audio durasi belum kebaca
+var pageTimes=[6000,6000,6000,6000,6000]; // durasi per halaman, dihitung ulang dari panjang teks
+
+function computePageTimes(totalMs){
+  // ambil panjang teks tiap halaman (.msg) sebagai bobot
+  var weights=[];
+  for(var i=0;i<total;i++){
+    var el=document.querySelector('#p'+i+' .msg');
+    var len = el ? el.textContent.trim().replace(/\s+/g,' ').length : 1;
+    weights.push(len);
+  }
+  var sumW = weights.reduce(function(a,b){return a+b;},0);
+  // kasih waktu minimum per halaman biar nggak ada yang kelewat cepat
+  var minMs = 3500;
+  var reserved = minMs * total;
+  var flexible = Math.max(totalMs - reserved, 0);
+  pageTimes = weights.map(function(w){
+    return minMs + (sumW>0 ? (w/sumW)*flexible : flexible/total);
+  });
+}
 
 function updateNav(){
   document.getElementById('btnPrev').disabled = cur===0;
@@ -503,6 +523,7 @@ function scheduleNext(){
   if(slideTimer) clearTimeout(slideTimer);
   
   if(cur < total - 1){
+    var waitMs = pageTimes[cur] || dynamicTime;
     slideTimer = setTimeout(function(){
       goTo(cur + 1);
       if(cur === total - 1){
@@ -511,7 +532,7 @@ function scheduleNext(){
       } else {
         scheduleNext();
       }
-    }, dynamicTime);
+    }, waitMs);
   }
 }
 
@@ -539,6 +560,7 @@ audio.addEventListener('loadedmetadata',function(){
   document.getElementById('timeTot').textContent=fmtTime(audio.duration);
   if(audio.duration && !isNaN(audio.duration)){
     dynamicTime = (audio.duration * 1000) / total;
+    computePageTimes(audio.duration * 1000);
   }
 });
 function fmtTime(s){var m=Math.floor(s/60);var sc=Math.floor(s%60);return m+':'+(sc<10?'0':'')+sc;}
